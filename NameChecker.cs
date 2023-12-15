@@ -33,6 +33,7 @@ public class NameChecker : BasePlugin
         {
             Console.WriteLine(name);
         }
+        reader.Close();
     }
 
     [ConsoleCommand("css_namechecker_reload")]
