@@ -6,5 +6,16 @@ Checks the names of the players when connecting, whether they contain words from
 
 <code>css_namechecker_reload</code> - reloads the list of names
 
+<h2>Modes:</h2>
+<pre>
+0 - Default(Kick Players)
+1 - Remove Nickname and set random
+2 - Replace name xxx.com from to aaa.com
+</pre>
+
+Edit config  - <code>configs/plugins/NameChecker</code>
+
+The config is generated automatically!
+
 <h3>Requires</h3>
-https://github.com/roflmuffin/CounterStrikeSharp Tested on v126
+<a href="https://docs.cssharp.dev/">CounterStrikeSharp</a> - Tested on v135
