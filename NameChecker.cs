@@ -4,6 +4,7 @@ using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Core.Translations;
 using CounterStrikeSharp.API.Modules.Commands;
+using CounterStrikeSharp.API.Modules.Config;
 using CounterStrikeSharp.API.Modules.Timers;
 using Timer = CounterStrikeSharp.API.Modules.Timers.Timer;
 
@@ -49,7 +50,7 @@ public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
     // ================================
 
     // ================================ SETTINGS
-    public int PluginMode = 2; // 0 - Default(Kick Players); 1 - Remove Nickname and set random; 2 - Replace name xxx.com from other server to aaa.com
+    public int PluginMode = 0; // 0 - Default(Kick Players); 1 - Remove Nickname and set random; 2 - Replace name xxx.com from other server to aaa.com
     public int kickTime = 10; // Seconds
     public string siteReplace = "aaa.com";  // Site replace if mode 2;
     // ================================
@@ -57,22 +58,23 @@ public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
     // ================================ LISTES
     private List<string> names = new List<string>();
     private List<string> namesToReplace = new List<string>();
-    private List<Timer> _timers = new List<Timer>();
+    private List<Timer> _timers = new ();
+    private List<CCSPlayerController> playersProccesed = new List<CCSPlayerController>();
     // ================================
 
 
     public void OnConfigParsed(NameCheckerConfig config)
     {
-        if (config.C_PluginMode > 2 || config.C_PluginMode < 0)
-        {
-            Console.WriteLine("[NameChecker] PluginMode must be value between [0-2] || 0 as default");
-            PluginMode = 0;
-        }
-        else PluginMode = config.C_PluginMode;
+        config = ConfigManager.Load<NameCheckerConfig>("NameChecker");
+        PluginMode = config.C_PluginMode;
         kickTime = config.C_KickTime;
         siteReplace = config.C_SiteReplace;
+        Console.WriteLine($"[NameChecker] config.C_PluginMode {config.C_PluginMode}");
+        Console.WriteLine($"[NameChecker] config.C_KickTime {config.C_KickTime}");
+        Console.WriteLine($"[NameChecker] config.C_SiteReplace {config.C_SiteReplace}");
         
         Config = config;
+        Console.WriteLine("[NameChecker] Config Parsed");
     }
 
     public override void Load(bool hotReload)
@@ -82,7 +84,6 @@ public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
 
     public void NamesReload()
     {
-        OnConfigParsed(Config);
         names = new List<string>();
         StreamReader reader = new StreamReader($"{ModuleDirectory}/names.txt");
         string line;
@@ -118,7 +119,14 @@ public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
     [ConsoleCommand("css_nc_reload")]
     public void onReloadCommand(CCSPlayerController? controller, CommandInfo eventInfo)
     {
+        OnConfigParsed(Config);
+        Console.WriteLine(Config.C_PluginMode);
         NamesReload();
+        foreach (var timer in _timers)
+        {
+            timer.Kill();
+        }
+        _timers.Clear();
         if (controller != null)
         {
             controller.PrintToChat("[NameChecker] Names reloaded");
@@ -146,11 +154,18 @@ public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
     public void checkName(CCSPlayerController controller)
     {
         string playerName = controller.PlayerName;
-        
+        foreach (var player in playersProccesed)
+        {
+            if (controller == player)
+            {
+                return;
+            }
+        }
         if (PluginMode == 0) // Kick player
         {
             if (names.Any(playerName.Contains))
             {
+                playersProccesed.Add(controller);
                 controller.PrintToConsole("Your nickname is banned! Change it!");
                 controller.PrintToConsole("Banned nickname list:");
                 foreach (var name in names)
@@ -162,8 +177,8 @@ public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
                 controller.PrintToChat($"{Green}[NameChecker]{Red} Your nickname is banned! Change it!");
                 controller.PrintToChat($"{Green}[NameChecker]{Olive} Check console to see banned nickname list!");
                 int timerIndex = _timers.Count;
-                Console.WriteLine(timerIndex);
                 
+
                 _timers.Add(AddTimer(1, () =>
                 {
                     controller.PrintToChat($"{Green}[NameChecker]{Red} You will be kicked trough {kickTime - timeCounter} seconds!");
@@ -172,8 +187,17 @@ public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
                     {
                         NativeAPI.IssueServerCommand($"kickid {controller.UserId} Your nickname is banned! Change it!");
                         Console.WriteLine($"[NameChecker] Player with name < {controller.PlayerName} > was kicked");
+                        for (int i = 0; i < playersProccesed.Count; i++)
+                        {
+                            if (playersProccesed[i] == controller)
+                            {
+                                playersProccesed.RemoveAt(i);
+                            }
+                        }
                         _timers[timerIndex].Kill();
                         _timers.RemoveAt(timerIndex);
+                        Console.WriteLine($"Timer count = {_timers.Count}");
+
                     }
                 }, TimerFlags.REPEAT));
             }
