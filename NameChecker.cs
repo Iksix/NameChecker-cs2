@@ -132,7 +132,7 @@ public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
         return HookResult.Continue;
     }
     [GameEventHandler]
-    public HookResult onPlayerConnect(EventRoundStart @event, GameEventInfo gameEventInfo)
+    public HookResult onRoundStart(EventRoundStart @event, GameEventInfo gameEventInfo)
     {
         List<CCSPlayerController> players = Utilities.GetPlayers();
         foreach (var player in players)
