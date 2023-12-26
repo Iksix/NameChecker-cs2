@@ -10,7 +10,7 @@ Checks the names of the players when connecting, whether they contain words from
 <pre>
 0 - Default(Kick Players)
 1 - Remove Nickname and set random in <code>namesToReplace.txt</code>
-2 - Replace name xxx.com from to aaa.com
+2 - Replace name xxx.com to aaa.com in config
 </pre>
 
 Edit config  - <code>configs/plugins/NameChecker</code>
