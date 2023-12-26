@@ -9,7 +9,7 @@ Checks the names of the players when connecting, whether they contain words from
 <h2>Modes:</h2>
 <pre>
 0 - Default(Kick Players)
-1 - Remove Nickname and set random
+1 - Remove Nickname and set random in <code>namesToReplace.txt</code>
 2 - Replace name xxx.com from to aaa.com
 </pre>
 
