@@ -4,7 +4,7 @@ Checks the names of the players when connecting, whether they contain words from
 
 <h2>Commands</h2>
 
-<code>css_namechecker_reload</code> - reloads the list of names
+<code>css_nc_reload</code> - reloads the list of names
 
 <h2>Modes:</h2>
 <pre>
