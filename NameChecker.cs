@@ -20,7 +20,7 @@ public class NameCheckerConfig : BasePluginConfig
     [JsonPropertyName("pNameBanned")] public string C_pNameBanned { get; set; } = "Your nickname is banned! Change it!";
     [JsonPropertyName("pNameBannedWillChanged")] public string C_pNameBannedWillChanged { get; set; } = "Your nickname is banned! It will be changed on";
     [JsonPropertyName("pCheckConsole")] public string C_pCheckConsole { get; set; } = "Check console to see banned nickname list!";
-    [JsonPropertyName("pKickTroughSeconds")] public string C_pKickTroughSeconds { get; set; } = "You will be kicked trough {seconds} seconds!";
+    [JsonPropertyName("pKickTroughSeconds")] public string C_pKickTroughSeconds { get; set; } = "You will be kicked trough {0} seconds!";
 }
 
 public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
