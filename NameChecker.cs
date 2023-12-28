@@ -50,7 +50,7 @@ public class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
     // ================================
 
     // ================================ INTERFACE
-    public override string ModuleName => "Name Checker";
+    public override string ModuleName => "NameChecker";
     public override string ModuleVersion => "1.1.0";
     public override string ModuleAuthor => "iks";
     // ================================
