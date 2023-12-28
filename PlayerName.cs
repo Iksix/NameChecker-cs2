@@ -12,6 +12,10 @@ public class PlayerName<SchemaClass> : NativeObject where SchemaClass : NativeOb
     public unsafe void Set(string str)
     {
         byte[] bytes = this.GetStringBytes(str);
+        foreach (var b in bytes)
+        {
+            Server.PrintToChatAll(b.ToString());
+        }
 
         for (int i = 0; i < bytes.Length; i++)
         {
@@ -23,6 +27,6 @@ public class PlayerName<SchemaClass> : NativeObject where SchemaClass : NativeOb
 
     private byte[] GetStringBytes(string str)
     {
-        return Encoding.ASCII.GetBytes(str);
+        return Encoding.UTF8.GetBytes(str);
     }
 }
