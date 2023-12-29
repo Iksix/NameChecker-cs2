@@ -41,6 +41,10 @@
             "CounterStrikeSharp.API": {
               "target": "Package",
               "version": "[1.0.135, )"
+            },
+            "FormatWith": {
+              "target": "Package",
+              "version": "[3.0.1, )"
             }
           },
           "imports": [

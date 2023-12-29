@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "TnZ6ug8NCnpasReyqnKQDYWsrs8xqvXx9/SLggLzTVjadyXh2Vy/NUp64IdxsJIus4TVxaNBmOqL7kZhBPhKCQ==",
+  "dgSpecHash": "dTTmilfFqjPD6YwOfVBBw8cqej3dUPKEHp/jZgBi1f4rqzBdkwnbWBmJ0mEHxd4Cx7CdmStnBUkoYEe1Pt2GgA==",
   "success": true,
   "projectFilePath": "D:\\__plgns\\NameChecker\\NameChecker\\NameChecker.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\iks\\.nuget\\packages\\counterstrikesharp.api\\1.0.135\\counterstrikesharp.api.1.0.135.nupkg.sha512",
+    "C:\\Users\\iks\\.nuget\\packages\\formatwith\\3.0.1\\formatwith.3.0.1.nupkg.sha512",
     "C:\\Users\\iks\\.nuget\\packages\\mcmaster.netcore.plugins\\1.4.0\\mcmaster.netcore.plugins.1.4.0.nupkg.sha512",
     "C:\\Users\\iks\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\iks\\.nuget\\packages\\microsoft.dotnet.apicompat.task\\7.0.404\\microsoft.dotnet.apicompat.task.7.0.404.nupkg.sha512",

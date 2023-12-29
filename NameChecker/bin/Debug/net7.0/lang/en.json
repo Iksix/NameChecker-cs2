@@ -1,0 +1,6 @@
+{
+	"main.bannedName" : "{red}В вашем никнейме есть запрещённые слова! Измените его!",
+	"main.bannedNamesInConsole" : "{red}Смотрите список запрещённых слов в консоли!",
+	"main.bannedListInConsole" : "Спискок запрещённых слов:",
+	"main.beforeKickMessage" : "{red}Вы будете кикнуты через {seconds} сек. !",
+}

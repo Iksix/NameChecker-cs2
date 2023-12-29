@@ -29,6 +29,19 @@
           }
         }
       },
+      "FormatWith/3.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/FormatWith.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/FormatWith.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "McMaster.NETCore.Plugins/1.4.0": {
         "type": "package",
         "dependencies": {
@@ -847,6 +860,19 @@
         "lib/net7.0/CounterStrikeSharp.API.dll",
         "lib/net7.0/CounterStrikeSharp.API.runtimeconfig.json",
         "lib/net7.0/CounterStrikeSharp.API.xml"
+      ]
+    },
+    "FormatWith/3.0.1": {
+      "sha512": "qAgVI8A9l33ZoOS/16slW82YktWWezb4sx535lGqdHSPB3ULVKWg6BJ4oi3FltFjNiMa3bypqFdmoFFgHZxkdA==",
+      "type": "package",
+      "path": "formatwith/3.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "formatwith.3.0.1.nupkg.sha512",
+        "formatwith.nuspec",
+        "lib/netstandard2.0/FormatWith.dll",
+        "lib/netstandard2.0/FormatWith.xml"
       ]
     },
     "McMaster.NETCore.Plugins/1.4.0": {
@@ -2223,7 +2249,8 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "CounterStrikeSharp.API >= 1.0.135"
+      "CounterStrikeSharp.API >= 1.0.135",
+      "FormatWith >= 3.0.1"
     ]
   },
   "packageFolders": {
@@ -2266,6 +2293,10 @@
           "CounterStrikeSharp.API": {
             "target": "Package",
             "version": "[1.0.135, )"
+          },
+          "FormatWith": {
+            "target": "Package",
+            "version": "[3.0.1, )"
           }
         },
         "imports": [
