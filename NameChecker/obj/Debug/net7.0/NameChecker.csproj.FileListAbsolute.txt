@@ -1,0 +1,12 @@
+D:\__plgns\NameChecker\NameChecker\bin\Debug\net7.0\NameChecker.deps.json
+D:\__plgns\NameChecker\NameChecker\bin\Debug\net7.0\NameChecker.dll
+D:\__plgns\NameChecker\NameChecker\bin\Debug\net7.0\NameChecker.pdb
+D:\__plgns\NameChecker\NameChecker\obj\Debug\net7.0\NameChecker.csproj.AssemblyReference.cache
+D:\__plgns\NameChecker\NameChecker\obj\Debug\net7.0\NameChecker.GeneratedMSBuildEditorConfig.editorconfig
+D:\__plgns\NameChecker\NameChecker\obj\Debug\net7.0\NameChecker.AssemblyInfoInputs.cache
+D:\__plgns\NameChecker\NameChecker\obj\Debug\net7.0\NameChecker.AssemblyInfo.cs
+D:\__plgns\NameChecker\NameChecker\obj\Debug\net7.0\NameChecker.csproj.CoreCompileInputs.cache
+D:\__plgns\NameChecker\NameChecker\obj\Debug\net7.0\NameChecker.dll
+D:\__plgns\NameChecker\NameChecker\obj\Debug\net7.0\refint\NameChecker.dll
+D:\__plgns\NameChecker\NameChecker\obj\Debug\net7.0\NameChecker.pdb
+D:\__plgns\NameChecker\NameChecker\obj\Debug\net7.0\ref\NameChecker.dll

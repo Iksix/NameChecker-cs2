@@ -1,0 +1,8 @@
+Write
+each
+name
+from
+the
+next
+line
+(Delete that)
