@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v7.0": {
       "NameChecker/1.0.0": {
         "dependencies": {
-          "CounterStrikeSharp.API": "1.0.135"
+          "CounterStrikeSharp.API": "1.0.135",
+          "FormatWith": "3.0.1"
         },
         "runtime": {
           "NameChecker.dll": {}
@@ -33,6 +34,14 @@
           "lib/net7.0/CounterStrikeSharp.API.dll": {
             "assemblyVersion": "1.0.135.0",
             "fileVersion": "1.0.135.0"
+          }
+        }
+      },
+      "FormatWith/3.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/FormatWith.dll": {
+            "assemblyVersion": "3.0.1.0",
+            "fileVersion": "3.0.1.0"
           }
         }
       },
@@ -513,6 +522,13 @@
       "sha512": "sha512-cIjE/T34wANoajgxZ6y2wimRMzsOztaM8K2HvSOsr4ZMdrLd1GQq5iPmly/M0LYXvDiB/GuzdDno1FEtvDmO5Q==",
       "path": "counterstrikesharp.api/1.0.135",
       "hashPath": "counterstrikesharp.api.1.0.135.nupkg.sha512"
+    },
+    "FormatWith/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qAgVI8A9l33ZoOS/16slW82YktWWezb4sx535lGqdHSPB3ULVKWg6BJ4oi3FltFjNiMa3bypqFdmoFFgHZxkdA==",
+      "path": "formatwith/3.0.1",
+      "hashPath": "formatwith.3.0.1.nupkg.sha512"
     },
     "McMaster.NETCore.Plugins/1.4.0": {
       "type": "package",

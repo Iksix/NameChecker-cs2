@@ -3,4 +3,6 @@
 	"main.bannedNamesInConsole" : "{red}Смотрите список запрещённых слов в консоли!",
 	"main.bannedListInConsole" : "Спискок запрещённых слов:",
 	"main.beforeKickMessage" : "{red}Вы будете кикнуты через {seconds} сек. !",
+	"main.nameReplaceOnRandom" : "{red}В вашем никнейме есть запрещённые слова! Он будет изменён на{green} {name}!"
+	
 }

@@ -1,5 +1,7 @@
-﻿using CounterStrikeSharp.API.Core;
+﻿using CounterStrikeSharp.API;
+using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
+using CounterStrikeSharp.API.Modules.Admin;
 using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Config;
 using CounterStrikeSharp.API.Modules.Timers;
@@ -59,6 +61,7 @@ class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
     private string[] _replaceWords;
     private string[] _whitelist;
     private List<Timer> _timers = new ();
+    private List<CCSPlayerController> _workedPlayers = new();
 
     #endregion
 
@@ -168,22 +171,93 @@ class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
     
     #endregion
 
+    [RequiresPermissions("@css/root")]
+    [ConsoleCommand("css_nc_reload")]
+    public void OnReloadCommand(CCSPlayerController? controller, CommandInfo info)
+    {
+        OnConfigParsed(Config);
+        Console.WriteLine($"{PluginTag} Plugin was reloaded!");
+        if (controller != null)
+        {
+            controller.PrintToChat($" {PluginTagColor}{PluginTag} {Green}Plugin was reloaded!");
+        }
+
+        foreach (var timer in _timers)
+        {
+            timer.Kill();
+        }
+        _timers.Clear();
+
+        foreach (var player in Utilities.GetPlayers())
+        {
+            checkNames(player);
+        }
+        
+    }
+    
+
     [GameEventHandler]
     public HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo info)
     {
-        switch (PluginMode)
+        checkNames(@event.Userid);
+        
+        return HookResult.Continue;
+    }
+    [GameEventHandler]
+    public HookResult OnRoundStart(EventRoundStart @event, GameEventInfo info)
+    {
+        foreach (var player in Utilities.GetPlayers())
         {
-            case 0:
-                KickMode(@event.Userid);
-                break;
+            checkNames(player);
         }
         
         return HookResult.Continue;
     }
+    [GameEventHandler]
+    public HookResult OnMapShutDown(EventMapShutdown @event, GameEventInfo info)
+    {
+        OnConfigParsed(Config);
+        Console.WriteLine($"{PluginTag} Plugin was reloaded!");
+
+        foreach (var timer in _timers)
+        {
+            timer.Kill();
+        }
+        _timers.Clear();
+
+        foreach (var player in Utilities.GetPlayers())
+        {
+            checkNames(player);
+        }
+        return HookResult.Continue;
+    }
+
+    public void checkNames(CCSPlayerController controller)
+    {
+        if (controller.IsBot)
+        {
+            return;
+        }
+        switch (PluginMode)
+        {
+            case 0:
+                KickMode(controller);
+                break;
+            case 1:
+                RenamePlayerOnRandomWord(controller);
+                break;
+            case 2:
+                RenameSiteMode(controller);
+                break;
+            case 3:
+                RenameSiteAndKickMode(controller);
+                break;
+        }
+    }
 
     public void PrintBannedNamesInConsole(CCSPlayerController controller)
     {
-        controller.PrintToConsole($" {PluginTag} " + Localizer["main.bannedListInConsole"]);
+        controller.PrintToConsole($"{PluginTag} " + Localizer["main.bannedListInConsole"]);
         foreach (var word in _bannedNames)
         {
             controller.PrintToConsole(word);
@@ -192,13 +266,20 @@ class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
 
     public void KickMode(CCSPlayerController controller)
     {
+        foreach (var player in _workedPlayers)
+        {
+            if (controller == player)
+            {
+                return;
+            }
+        }
         if (!_bannedNames.Any(controller.PlayerName.Contains))
         {
             return;
         }
-        
+        _workedPlayers.Add(controller);
         controller.PrintToChat($" {PluginTagColor}{PluginTag} " + Localizer["main.bannedName"]);
-
+        controller.PrintToChat($" {PluginTagColor}{PluginTag} " + Localizer["main.bannedNamesInConsole"]);
         int counter = KickTime;
 
         int timerIndex = _timers.Count;
@@ -206,15 +287,66 @@ class NameChecker : BasePlugin, IPluginConfig<NameCheckerConfig>
         _timers.Add(AddTimer(1, () =>
         {
             controller.PrintToChat($" {PluginTagColor}{PluginTag} " + Localizer["main.beforeKickMessage"].ToString().FormatWith(new {seconds = counter}));
-            controller.PrintToChat($" {PluginTagColor}{PluginTag} " + Localizer["main.bannedNamesInConsole"]);
             PrintBannedNamesInConsole(controller);
             counter--;
             if (counter <= 0)
             {
+                for (int i = 0; i < _workedPlayers.Count; i++)
+                {
+                    if (controller == _workedPlayers[i])
+                    {
+                        _workedPlayers.RemoveAt(i);
+                    }
+                }
+                
                 NativeAPI.IssueServerCommand($"kickid {controller.UserId}");
                 _timers[timerIndex].Kill();
                 _timers.RemoveAt(timerIndex);
             }
         }, TimerFlags.REPEAT));
+    }
+
+    public void RenameSiteMode(CCSPlayerController controller)
+    {
+        string[] wordsInPlayerName = controller.PlayerName.Split(" ");
+
+        string newPlayerName = controller.PlayerName;
+
+        foreach (var word in wordsInPlayerName)
+        {
+            bool wordContainsWhiteListWord = false;
+            foreach (var whitelistWord in _whitelist)
+            {
+                wordContainsWhiteListWord = word.Contains(whitelistWord);
+            }
+            if (wordContainsWhiteListWord) continue;
+            foreach (string domain in Domains)
+            {
+                if (word.Contains(domain))
+                {
+                    newPlayerName = newPlayerName.Replace(word, PluginSiteReplace);
+                }
+            }
+            PlayerName<CBasePlayerController> _playerName = new PlayerName<CBasePlayerController>(controller, "m_iszPlayerName");
+            _playerName.Set(newPlayerName);
+        }
+    }
+
+    public void RenamePlayerOnRandomWord(CCSPlayerController controller)
+    {
+        if (_bannedNames.Any(controller.PlayerName.Contains))
+        {
+            Random rnd = new Random();
+            PlayerName<CBasePlayerController> _playerName = new PlayerName<CBasePlayerController>(controller, "m_iszPlayerName");
+            string randomWord = _replaceWords[rnd.Next(0, _replaceWords.Length)];
+            _playerName.Set(randomWord);
+            controller.PrintToChat($" {PluginTagColor}{PluginTag} " + Localizer["main.nameReplaceOnRandom"].ToString().FormatWith(new {name = randomWord}));
+        }
+    }
+
+    public void RenameSiteAndKickMode(CCSPlayerController controller)
+    {
+        RenameSiteMode(controller);
+        KickMode(controller);
     }
 }
